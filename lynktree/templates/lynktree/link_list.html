@@ -1,0 +1,82 @@
+{% extends 'lynktree/base.html' %} 
+
+{% block content %}
+
+
+<h1 class="text-4xl text-center mb-10">All My Links</h1>
+<div class="w-full mx-auto overflow-auto">
+    <table class="table-auto w-full text-left whitespace-no-wrap">
+        <thead>
+            <tr>
+                <th
+                    class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">
+                    Text
+                </th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                    URL
+                </th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                    Profile
+                </th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                    Edit
+                </th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                    Delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for link in object_list %}
+            <tr>
+                <td class="px-4 py-3">{{link.text}}</td>
+                <td class="px-4 py-3">
+                    <a href="{{ link.url }}" target="_blank">
+                        {{ link.url }}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </a>
+                </td>
+                <td class="px-4 py-3">
+                    <a href="{% url 'lynktree:profile' link.profile.slug %}" target="_blank">
+                        {{link.profile.name}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </a>
+                </td>
+                <td class="px-4 py-3 underline text-blue-600">
+                    <a href="{% url 'lynktree:link-update' link.id %}">Edit</a>
+                </td>
+                <td class="px-4 py-3 underline text-red-600">
+                    <a href="{% url 'lynktree:link-delete' link.id %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'lynktree:link-create' %}">
+        <p class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add New +</p>
+    </a>
+    <hr>
+
+    <footer class="bg-neutral-primary-soft rounded-base shadow-xs border border-default m-4">
+    <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+      <span class="text-sm text-body sm:text-center">© 2026 <a href="{% url 'lynktree:link-list' %}" class="hover:underline">LynkTree™</a>.
+    </span>
+    <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-body sm:mt-0">
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="inline font-medium text-fg-brand underline hover:no-underline">Log Out! <span aria-hidden="true">&rarr;</span></button>
+    </form>
+    </ul>
+    </div>
+</footer>
+
+{% endblock content %}
